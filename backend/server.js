@@ -30,9 +30,10 @@ const contract = new ethers.Contract(contractAddress, abi, wallet);
 /* ===============================
    Upload Route (Register File)
 ================================= */
-
 app.post("/upload", upload.single("file"), async (req, res) => {
+
   try {
+
     const fileBuffer = req.file.buffer;
 
     const hash = crypto
@@ -41,18 +42,26 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       .digest("hex");
 
     const tx = await contract.registerFile(hash);
-    await tx.wait();
+
+    const receipt = await tx.wait();
 
     res.json({
-      message: "File registered on blockchain",
-      hash: hash
+      message: "File registered successfully",
+      hash: hash,
+      blockNumber: receipt.blockNumber
     });
 
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
+    if (error.reason) {
+      res.status(400).json({ error: error.reason });
+    } else {
+      res.status(500).json({ error: error.message });
+    }
+
+  }
+
+});
 /* ===============================
    Verify Route
 ================================= */
