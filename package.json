@@ -1,22 +1,37 @@
 {
   "name": "blockchain-file-auth",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Decentralized document verification platform using Ethereum, IPFS, and AI-based analysis",
+  "main": "backend/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js",
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "node": "npx hardhat node",
+    "deploy": "npx hardhat run scripts/deploy.js --network localhost",
+    "deploy:local": "npx hardhat run scripts/deploy.js --network localhost"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "ipfs",
+    "document-verification",
+    "smart-contracts",
+    "ai"
+  ],
+  "author": "Soumyadeep",
+  "license": "MIT",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "hardhat": "^2.22.0"
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "ethers": "^6.16.0",
     "express": "^5.2.1",
-    "multer": "^2.1.0"
+    "multer": "^2.1.0",
+    "pdf-parse": "^1.1.4"
   }
 }

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlockVault - Premium Blockchain Document Verification</title>
+  <meta name="description" content="Secure, analyze, and verify your documents on the blockchain with AI-powered risk assessment.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <span class="logo-icon">⛓️</span>
+        <span class="logo-text">BlockVault</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#upload">Upload</a></li>
+        <li><a href="#verify">Verify</a></li>
+        <li><a href="#historySection">History</a></li>
+      </ul>
+      <div class="nav-status">
+        <span id="healthIndicator" class="health-indicator" title="Checking status..."></span>
+        <span class="status-label">Network Status</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Secure & Verify with <span class="gradient-text">Blockchain & AI</span></h1>
+      <p class="hero-subtitle">Upload your documents for AI-powered risk analysis and immutable blockchain registration.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Upload Section -->
+    <section id="upload" class="section glass-card">
+      <h2 class="section-title">Upload & Register Document</h2>
+      <div class="section-content">
+        
+        <div id="dropZone" class="drop-zone">
+          <input type="file" id="uploadFileInput" class="file-input" hidden>
+          <div class="drop-zone-content">
+            <span class="drop-icon">☁️</span>
+            <p>Drag and drop a file here, or <span class="text-accent">click to browse</span></p>
+            <p class="drop-hint">Supports PDF, DOCX, JPG, PNG (Max 10MB)</p>
+          </div>
+        </div>
+        
+        <div id="uploadPreview" class="file-preview-container" style="display: none;"></div>
+        
+        <div id="uploadActions" class="actions-container" style="display: none;">
+          <button id="analyzeBtn" class="btn btn-primary" onclick="analyzeFile()">🤖 Analyze with AI</button>
+          <button class="btn btn-text" onclick="resetUpload()">Cancel</button>
+        </div>
+
+        <!-- AI Results Panel -->
+        <div id="aiResultsPanel" class="results-panel glass-card" style="display: none;">
+          <h3>AI Analysis Results</h3>
+          <div class="ai-dashboard">
+            <div class="risk-gauge-container">
+              <svg class="risk-gauge" viewBox="0 0 120 120">
+                <circle class="gauge-bg" cx="60" cy="60" r="54"></circle>
+                <circle id="riskGaugeCircle" class="gauge-progress" cx="60" cy="60" r="54"></circle>
+              </svg>
+              <div class="gauge-center">
+                <span id="riskScoreValue" class="score-value">0</span>
+                <span id="riskLevel" class="risk-badge">NONE</span>
+              </div>
+            </div>
+            
+            <div class="hashes-container">
+              <div class="hash-item">
+                <span class="hash-label">SHA-256</span>
+                <code id="hashSha256" class="mono">...</code>
+              </div>
+              <div class="hash-item">
+                <span class="hash-label">MD5</span>
+                <code id="hashMd5" class="mono">...</code>
+              </div>
+            </div>
+          </div>
+          
+          <div class="findings-section">
+            <h4>Findings</h4>
+            <div id="findingsList" class="findings-list"></div>
+          </div>
+          
+          <div class="recommendations-section">
+            <h4>Recommendations</h4>
+            <div id="recommendationsList" class="recommendations-list"></div>
+          </div>
+          
+          <div class="register-action">
+            <button id="registerBtn" class="btn btn-accent" style="display: none;" onclick="registerDocument()">⛓️ Register on Blockchain</button>
+          </div>
+        </div>
+
+        <!-- Upload Success -->
+        <div id="uploadSuccess" class="success-panel glass-card" style="display: none;">
+          <div class="success-header">
+            <span class="success-icon">✨</span>
+            <h3>Registration Successful</h3>
+          </div>
+          <div class="success-details">
+            <div class="detail-row"><span class="detail-label">File Hash</span><span id="successHash" class="detail-value mono"></span></div>
+            <div class="detail-row"><span class="detail-label">Block Number</span><span id="successBlock" class="detail-value"></span></div>
+            <div class="detail-row"><span class="detail-label">Tx Hash</span><span id="successTx" class="detail-value mono"></span></div>
+            <div class="detail-row"><span class="detail-label">IPFS CID</span><span id="successIpfs" class="detail-value mono"></span></div>
+          </div>
+          <button class="btn btn-primary mt-4" onclick="resetUpload()">Upload Another File</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Verify Section -->
+    <section id="verify" class="section glass-card">
+      <h2 class="section-title">Verify Document</h2>
+      <div class="section-content">
+        
+        <div id="verifyDropZone" class="drop-zone">
+          <input type="file" id="verifyFileInput" class="file-input" hidden>
+          <div class="drop-zone-content">
+            <span class="drop-icon">🔍</span>
+            <p>Drag and drop a file to verify, or <span class="text-accent">click to browse</span></p>
+          </div>
+        </div>
+        
+        <div id="verifyPreview" class="file-preview-container" style="display: none;"></div>
+        
+        <div id="verifyActions" class="actions-container" style="display: none;">
+          <button id="verifyBtn" class="btn btn-primary" onclick="verifyDocument()">🔍 Verify Document</button>
+        </div>
+
+        <div id="verifyResults" class="verify-results-panel glass-card" style="display: none;"></div>
+        
+      </div>
+    </section>
+
+    <!-- History Section -->
+    <section id="historySection" class="section glass-card" style="display: none;">
+      <h2 class="section-title">Session History</h2>
+      <div id="documentHistory" class="table-container"></div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" class="section stats-container">
+      <div class="stat-card glass-card">
+        <div class="stat-value gradient-text" id="statTotal">0</div>
+        <div class="stat-label">Total Documents Verified</div>
+      </div>
+      <div class="stat-card glass-card">
+        <div class="stat-value mono" id="statContract">0x...</div>
+        <div class="stat-label">Smart Contract</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2026 BlockVault. Premium Blockchain Document Verification.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
